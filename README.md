@@ -2,12 +2,12 @@
 ---
 ### A consumer for reading string messages on kafka
 
-*Prerequisites*
+**Prerequisites**
 * Apache Maven command line - https://maven.apache.org/download.cgi
 * JDK >= 1.8.0_101
 * Confluent Cloud username and password provided by Cloud team
 
-Instructions to run:
+**Instructions to run:**
 1. git clone on your local machine
 2. go to the root dir of the git clone and mvn package
 3. java -jar target/consumer-0.0.1-SNAPSHOT.jar --kafka.username=xxxxxx --kafka.password=xxxxx --writable.dir=/tmp
