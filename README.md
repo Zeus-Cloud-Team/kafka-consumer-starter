@@ -16,3 +16,6 @@ For step 3 you'll need to provide credentials to Confluent Cloud that were provi
 The api.key is the username and api.secret is the password.
 You'll also need to make sure you pass it a valid writable directory absolute path for writable.dir, in the above example /tmp is used.  
 If that location is writable then that can be used.
+
+This app takes the avro schema for transactions and listens for messages sent to the transactions
+topic, and receives and deserializes those messages back into transaction pojos.
