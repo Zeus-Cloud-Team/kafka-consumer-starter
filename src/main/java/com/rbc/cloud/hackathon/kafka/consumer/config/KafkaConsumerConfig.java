@@ -1,8 +1,10 @@
 package com.rbc.cloud.hackathon.kafka.consumer.config;
 
 
+import com.rbc.cloud.hackathon.data.Transactions;
 import com.rbc.cloud.hackathon.kafka.consumer.util.JavaVersion;
 import com.rbc.cloud.hackathon.kafka.consumer.util.Util;
+import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,13 +40,16 @@ public class KafkaConsumerConfig {
     private ResourceLoader resourceLoader;
 
     @Bean(name="ZeusListenerFactory")
-    ConcurrentKafkaListenerContainerFactory<String, String> zeusConcurrentKafkaListenerFactory() {
+    ConcurrentKafkaListenerContainerFactory<String, Transactions> zeusConcurrentKafkaListenerFactory() {
 
         validationChecks();
 
         final Map<String, Object> properties = new HashMap<>();
 
         properties.put("bootstrap.servers",env.getProperty("kafka.bootstrap.servers"));
+        properties.put("schema.registry.url",env.getProperty("schema.registry.url"));
+        properties.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
+
         properties.put("enable.auto.commit",env.getProperty("enable.auto.commit"));
         properties.put("session.timeout.ms",env.getProperty("session.timeout.ms"));
         properties.put("auto.offset.reset",env.getProperty("auto.offset.reset"));
@@ -54,7 +59,7 @@ public class KafkaConsumerConfig {
 
         properties.put("group.id",env.getProperty("group.id"));
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,org.apache.kafka.common.serialization.StringDeserializer.class);
-        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,org.apache.kafka.common.serialization.StringDeserializer.class);
+        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,io.confluent.kafka.serializers.KafkaAvroDeserializer.class);
         try {
             properties.put("client.id", InetAddress.getLocalHost().getHostName());
         } catch (Exception e) {
@@ -85,9 +90,7 @@ public class KafkaConsumerConfig {
             throw new RuntimeException(e);
         }
 
-
-
-        final ConcurrentKafkaListenerContainerFactory<String, String> factory=new ConcurrentKafkaListenerContainerFactory<>();
+        final ConcurrentKafkaListenerContainerFactory<String, Transactions> factory=new ConcurrentKafkaListenerContainerFactory<>();
         factory.setBatchListener(Boolean.valueOf(env.getProperty("batch.listener")));
         factory.setConsumerFactory(new DefaultKafkaConsumerFactory<>(properties));
         factory.getContainerProperties().setAckMode(AbstractMessageListenerContainer.AckMode.MANUAL);

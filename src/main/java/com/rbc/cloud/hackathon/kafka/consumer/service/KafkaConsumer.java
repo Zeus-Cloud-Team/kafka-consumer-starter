@@ -1,5 +1,6 @@
 package com.rbc.cloud.hackathon.kafka.consumer.service;
 
+import com.rbc.cloud.hackathon.data.Transactions;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.Producer;
 import org.slf4j.Logger;
@@ -21,13 +22,18 @@ public class KafkaConsumer {
     String topicName;
 
     @KafkaListener(id="ZeusListener", topics="#{'${topic.name}'}", containerFactory = "ZeusListenerFactory")
-    private void listen(final List<ConsumerRecord<String, String>> messages, final Acknowledgment ack) {
+    private void listen(final List<ConsumerRecord<String, Transactions>> messages, final Acknowledgment ack) {
         logger.info("Received {} messages, iterating..", messages.size());
-        for (ConsumerRecord<String, String> record : messages) {
+        for (ConsumerRecord<String, Transactions> record : messages) {
             String key=record.key();
-            String value=record.value();
-//            ack.acknowledge();
+            Transactions value=record.value();
+            ack.acknowledge();
             logger.info(" consumed message : key[{}] = payload[{}]",key,value);
+        }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         logger.info("Done with this batch");
 
