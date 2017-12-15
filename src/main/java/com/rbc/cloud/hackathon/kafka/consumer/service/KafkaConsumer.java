@@ -38,4 +38,5 @@ public class KafkaConsumer {
         logger.info("Done with this batch");
 
     }
+
 }

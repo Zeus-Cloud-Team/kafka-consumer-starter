@@ -62,6 +62,11 @@
 			<version>3.1.1</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-streams</artifactId>
+			<version>0.11.0.0-cp1</version>
+		</dependency>
+		<dependency>
 			<groupId>io.confluent</groupId>
 			<artifactId>monitoring-interceptors</artifactId>
 			<version>3.3.1</version>

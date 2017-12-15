@@ -1,0 +1,8 @@
+{"namespace": "com.rbc.cloud.hackathon.data",
+"type": "record",
+"name": "TransactionsSum",
+"fields": [
+    {"name": "CustId",  "type": "string"},
+    {"name": "TransactionSum",  "type": "double"}
+  ]
+}
