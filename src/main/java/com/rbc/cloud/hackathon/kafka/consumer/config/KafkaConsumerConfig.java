@@ -57,6 +57,11 @@ public class KafkaConsumerConfig {
         properties.put("max.partition.fetch.bytes",env.getProperty("max.partition.fetch.bytes"));
         properties.put("max.poll.records",env.getProperty("max.poll.records"));
 
+        properties.put("interceptor.classes", env.getProperty("interceptor.classes"));
+        properties.put("confluent.monitoring.interceptor.sasl.jaas.config", env.getProperty("confluent.monitoring.interceptor.sasl.jaas.config"));
+        properties.put("confluent.monitoring.interceptor.security.protocol", env.getProperty("confluent.monitoring.interceptor.security.protocol"));
+        properties.put("confluent.monitoring.interceptor.sasl.mechanism", env.getProperty("confluent.monitoring.interceptor.sasl.mechanism"));
+
         properties.put("group.id",env.getProperty("group.id"));
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,org.apache.kafka.common.serialization.StringDeserializer.class);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,io.confluent.kafka.serializers.KafkaAvroDeserializer.class);
